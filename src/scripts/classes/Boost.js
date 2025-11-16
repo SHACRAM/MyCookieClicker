@@ -1,18 +1,22 @@
 export class Boost{
+   updateCookiesScore = null;
    shopId;
    name;
    actualQuantity;
    price;
    boostQuantity;
+   cookies;
 
    boostElement = null;
 
      constructor(itemInfo){
+         this.updateCookiesScore = itemInfo.updateCookiesScore;
          this.shopId = itemInfo.shopId;
          this.name = itemInfo.name;
          this.actualQuantity = itemInfo.actualQuantity;
          this.price = itemInfo.price;
          this.boostQuantity = itemInfo.boostQuantity;
+         this.cookies = itemInfo.cookies;
      }
 
    render(){
@@ -28,6 +32,7 @@ export class Boost{
       `;
 
       this.boostElement = boostItemElement;
+      
 
       let buyButton = boostItemElement.querySelector('.buyButton');
 
@@ -38,9 +43,10 @@ export class Boost{
 
       
       document.querySelector('#' + this.shopId).append(boostItemElement);
+      this.activeDesableBuyButton();
 
       
-     }
+   }
 
 
    calculatePrice(){
@@ -57,6 +63,7 @@ export class Boost{
 
    updateBoostInfo(){
       this.actualQuantity += 1;
+      this.updateCookiesScore(this.price);
       this.calculatePrice();
       this.calculateBoost();
       this.renderInfo();
@@ -69,5 +76,17 @@ export class Boost{
    this.boostElement.querySelector('.itemBoostQuantity').textContent = `Boost: +${this.boostQuantity} cookies/sec`;
 }
 
+   activeDesableBuyButton(){
+      const buyButton = this.boostElement.querySelector('.buyButton');
+      if(this.cookies.value >= this.price){
+         buyButton.disabled = false;
+      } else {
+         buyButton.disabled = true;
+      }
+   }
+
+   
 
 }
+
+// AJOUTER UN ECOUTEUR POUR ACTIVER DESACTIVER LE BOOUTON

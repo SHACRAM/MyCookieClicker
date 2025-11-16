@@ -2,13 +2,18 @@ import { Boost } from "./Boost";
 
 export class Shop{
     id = 'shop'
+    cookies;
 
     shopElement = null;
 
     boostItems = [];
+    updateCookiesScore = null;
 
 
-    constructor(){}
+    constructor(config){
+        this.updateCookiesScore = config.updateCookiesScore;
+        this.cookies = config.cookies;
+    }
 
 
     render(){
@@ -28,21 +33,25 @@ export class Shop{
 
     createBoostItems(){
         const cursor = new Boost({
+            updateCookiesScore : this.updateCookiesScore,
             shopId : this.id,
             name : "Cursor",
             actualQuantity : 0,
             price : 10,
             boostQuantity : 0,
+            cookies: this.cookies
 
         });
         this.boostItems.push(cursor);
     
         const grandma = new Boost({
+            updateCookiesScore : this.updateCookiesScore,
             shopId : this.id,
             name : "Grandma",
             actualQuantity : 0,
             price : 100,
             boostQuantity : 0,
+            cookies: this.cookies
         });
         this.boostItems.push(grandma);
     }

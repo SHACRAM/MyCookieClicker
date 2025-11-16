@@ -1,6 +1,8 @@
 	
+import { updateSourceFile } from "typescript";
 import { ClickableArea } from "../components/clickable-area";
 import { Shop } from "./Shop";
+import {Boost} from "./Boost";
 	
  
 	
@@ -9,8 +11,7 @@ export class Game {
   // Game Properties
 	
   cookies = 0;
-  
-	
+  passiveGain = 0;	
  
 	
   // Game Elements
@@ -73,7 +74,11 @@ export class Game {
     this.renderScore();
 
     this.clickableArea.render();
-    const shop = new Shop();
+    const cookiesState = {value: this.cookies};
+    const shop = new Shop({
+      updateCookiesScore : this.updateCookiesScore,
+      cookies: cookiesState
+    });
     shop.render();
 	
   }
@@ -105,7 +110,6 @@ export class Game {
         <span>${this.cookies} cookies</span>
 	
     `;
-	
   }
 	
  
@@ -118,6 +122,8 @@ export class Game {
     // On ajoute 1 point aux cookies pour chaque click.
 	
     this.cookies += 1;
+
+    document.dispatchEvent(new Event("cookieClicked"));
 	
     // Par soucis de performance car les changements au DOM sont très lourd,
 	
@@ -132,5 +138,11 @@ export class Game {
     });
 	
   };
+
+// Methode pour mettre à jour la quantité de cookies aprés un achat dans le shop
+  updateCookiesScore = (purchaseQuantity) => {
+    this.cookies -= purchaseQuantity;
+    this.updateScore();
+  }
 	
 }
