@@ -1,5 +1,6 @@
 	
-import { ClickableArea } from "./clickable-area";
+import { ClickableArea } from "../components/clickable-area";
+import { Shop } from "./Shop";
 	
  
 	
@@ -8,6 +9,7 @@ export class Game {
   // Game Properties
 	
   cookies = 0;
+  
 	
  
 	
@@ -16,6 +18,8 @@ export class Game {
   gameElement = null;
 	
   scoreElement = null;
+	
+  shopElement = null;
 	
  
 	
@@ -66,10 +70,11 @@ export class Game {
   // Génère les éléments à afficher.
 	
   render() {
-	
     this.renderScore();
-	
+
     this.clickableArea.render();
+    const shop = new Shop();
+    shop.render();
 	
   }
 	
@@ -79,13 +84,13 @@ export class Game {
 	
   renderScore() {
 	
-    this.scoreElement = document.createElement("section");
-	
-	this.scoreElement.id = "game-score";
-	
-    this.gameElement.append(this.scoreElement);
-	
-    this.updateScore();
+  this.scoreElement = document.createElement("section");
+
+  this.scoreElement.id = "game-score";
+
+  this.gameElement.append(this.scoreElement);
+
+  this.updateScore();
 	
   }
 	

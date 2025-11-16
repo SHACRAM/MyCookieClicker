@@ -1,6 +1,6 @@
 import "../styles/style.css";
 	
-import { Game } from "./game";
+import { Game } from "./classes/game";
 	
  
 	
