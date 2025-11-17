@@ -11,7 +11,9 @@ export class Game {
   // Game Properties
 	
   cookies = 0;
-  passiveGain = 0;	
+  passiveGain = 0;
+
+
  
 	
   // Game Elements
@@ -20,7 +22,7 @@ export class Game {
 	
   scoreElement = null;
 	
-  shopElement = null;
+  shop = null;
 	
  
 	
@@ -53,6 +55,9 @@ export class Game {
       this.onClickableAreaClick
 	
     );
+    this.shop = new Shop({
+      updateCookiesScore : this.updateCookiesScore,
+    });    
 	
   }
 	
@@ -74,12 +79,10 @@ export class Game {
     this.renderScore();
 
     this.clickableArea.render();
-    const cookiesState = {value: this.cookies};
-    const shop = new Shop({
-      updateCookiesScore : this.updateCookiesScore,
-      cookies: cookiesState
-    });
-    shop.render();
+    
+    this.shop.render();
+    this.shop.updateChildButtonState(this.cookies);
+
 	
   }
 	
@@ -122,6 +125,7 @@ export class Game {
     // On ajoute 1 point aux cookies pour chaque click.
 	
     this.cookies += 1;
+    this.shop.updateChildButtonState(this.cookies);
 
     document.dispatchEvent(new Event("cookieClicked"));
 	
@@ -143,6 +147,9 @@ export class Game {
   updateCookiesScore = (purchaseQuantity) => {
     this.cookies -= purchaseQuantity;
     this.updateScore();
+    this.shop.updateChildButtonState(this.cookies);
   }
+
+
 	
 }

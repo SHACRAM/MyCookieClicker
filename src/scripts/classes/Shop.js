@@ -3,6 +3,7 @@ import { Boost } from "./Boost";
 export class Shop{
     id = 'shop'
     cookies;
+    enableBuyButton;
 
     shopElement = null;
 
@@ -13,6 +14,7 @@ export class Shop{
     constructor(config){
         this.updateCookiesScore = config.updateCookiesScore;
         this.cookies = config.cookies;
+        this.enableBuyButton = config.enableBuyButton;
     }
 
 
@@ -39,7 +41,8 @@ export class Shop{
             actualQuantity : 0,
             price : 10,
             boostQuantity : 0,
-            cookies: this.cookies
+            cookies: this.cookies,
+            enableBuyButton: this.enableBuyButton
 
         });
         this.boostItems.push(cursor);
@@ -51,12 +54,20 @@ export class Shop{
             actualQuantity : 0,
             price : 100,
             boostQuantity : 0,
-            cookies: this.cookies
+            cookies: this.cookies,
+            enableBuyButton: this.enableBuyButton
+
         });
         this.boostItems.push(grandma);
     }
 
-    
-
-
+    updateChildButtonState(cookies){
+        this.boostItems.forEach((item)=>{
+            if(cookies >= item.price){
+                item.updateBuyButtonState(false)
+            }else{
+                item.updateBuyButtonState(true)
+            }
+        })
+    }
 }
