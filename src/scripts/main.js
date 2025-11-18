@@ -1,9 +1,7 @@
 import "../styles/style.css";
-	
+
 import { Game } from "./classes/game";
-	
- 
-	
+
 document.querySelector("#app").innerHTML = `
 	
     <h1>Welcome to my Cookie Clicker!</h1>
@@ -13,15 +11,9 @@ document.querySelector("#app").innerHTML = `
     </main>
 	
 `;
-	
- 
-	
+
 const game = new Game({
-	
   cookies: 0,
-	
 });
-	
- 
-	
+
 game.start();

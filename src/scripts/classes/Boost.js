@@ -1,31 +1,30 @@
-export class Boost{
-   updateCookiesScore = null;
-   shopId;
-   name;
-   actualQuantity;
-   price;
-   boostQuantity;
-   cookies;
-   enableBuyButton;
+export class Boost {
+  shopId;
+  name;
+  actualQuantity;
+  price;
+  boostQuantity;
+  cookies;
+  enableBuyButton;
 
-   boostElement = null;
+  boostElement = null;
 
-     constructor(itemInfo){
-         this.updateCookiesScore = itemInfo.updateCookiesScore;
-         this.shopId = itemInfo.shopId;
-         this.name = itemInfo.name;
-         this.actualQuantity = itemInfo.actualQuantity;
-         this.price = itemInfo.price;
-         this.boostQuantity = itemInfo.boostQuantity;
-         this.cookies = itemInfo.cookies;
-         this.enableBuyButton = itemInfo.enableBuyButton;
-     }
+  constructor(itemInfo) {
+    this.updateCookiesScore = itemInfo.updateCookiesScore;
+    this.shopId = itemInfo.shopId;
+    this.name = itemInfo.name;
+    this.actualQuantity = itemInfo.actualQuantity;
+    this.price = itemInfo.price;
+    this.boostQuantity = itemInfo.boostQuantity;
+    this.cookies = itemInfo.cookies;
+    this.enableBuyButton = itemInfo.enableBuyButton;
+  }
 
-   render(){
-      const boostItemElement = document.createElement("div");
-      boostItemElement.className = "boost-item";
+  render() {
+    const boostItemElement = document.createElement("div");
+    boostItemElement.className = "boost-item";
 
-      boostItemElement.innerHTML = `
+    boostItemElement.innerHTML = `
          <h3>${this.name}</h3>
          <p class="itemQuantity">Quantity: ${this.actualQuantity}</p>
          <p class="itemPrice">Price: ${this.price} cookies</p>
@@ -33,56 +32,53 @@ export class Boost{
          <button class="buyButton">Buy</button>
       `;
 
-      this.boostElement = boostItemElement;
-      
+    this.boostElement = boostItemElement;
 
-      let buyButton = boostItemElement.querySelector('.buyButton');
+    let buyButton = boostItemElement.querySelector(".buyButton");
 
-      buyButton.addEventListener('click', ()=>{
-         this.updateBoostInfo();
-      })
+    buyButton.addEventListener("click", () => {
+      this.updateBoostInfo();
+    });
 
+    document.querySelector("#" + this.shopId).append(boostItemElement);
+  }
 
-      
-      document.querySelector('#' + this.shopId).append(boostItemElement);
+  calculatePrice() {
+    this.price = this.price + this.actualQuantity * 3;
+  }
 
-      
-   }
+  calculateBoost() {
+    this.boostQuantity = (this.actualQuantity * 0.1).toFixed(1);
+  }
 
+  getActualQuantity() {
+    return this.actualQuantity;
+  }
 
-   calculatePrice(){
-      this.price = this.price+(this.actualQuantity*3);
-   }
+  updateBoostInfo() {
+    this.actualQuantity += 1;
+    this.updateCookiesScore(this.price);
+    this.calculatePrice();
+    this.calculateBoost();
+    this.renderInfo();
+  }
 
-   calculateBoost(){
-      this.boostQuantity =(this.actualQuantity*0.1).toFixed(1);
-   }
-
-   getActualQuantity(){
-         return this.actualQuantity;
-   }
-
-   updateBoostInfo(){
-      this.actualQuantity += 1;
-      this.updateCookiesScore(this.price);
-      this.calculatePrice();
-      this.calculateBoost();
-      this.renderInfo();
-   }
-
-   renderInfo(){
-   if (!this.boostElement) return;
-   this.boostElement.querySelector('.itemQuantity').textContent = `Quantity: ${this.actualQuantity}`;
-   this.boostElement.querySelector('.itemPrice').textContent = `Price: ${this.price} cookies`;
-   this.boostElement.querySelector('.itemBoostQuantity').textContent = `Boost: +${this.boostQuantity} cookies/sec`;
-}
-updateBuyButtonState(status){
-   const buyButton = this.boostElement.querySelector('.buyButton');
-   buyButton.disabled = status;
-   
-}
-
+  renderInfo() {
+    if (!this.boostElement) return;
+    this.boostElement.querySelector(
+      ".itemQuantity"
+    ).textContent = `Quantity: ${this.actualQuantity}`;
+    this.boostElement.querySelector(
+      ".itemPrice"
+    ).textContent = `Price: ${this.price} cookies`;
+    this.boostElement.querySelector(
+      ".itemBoostQuantity"
+    ).textContent = `Boost: +${this.boostQuantity} cookies/sec`;
+  }
+  updateBuyButtonState(status) {
+    const buyButton = this.boostElement.querySelector(".buyButton");
+    buyButton.disabled = status;
+  }
 }
 
 // AJOUTER UN ECOUTEUR POUR ACTIVER DESACTIVER LE BOOUTON
-                                                                                              
