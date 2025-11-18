@@ -70,4 +70,13 @@ export class Shop{
             }
         })
     }
+
+
+    getAllBoostsQuantity(){
+        let totalBoost = 0;
+        this.boostItems.forEach((item)=>{
+            totalBoost = totalBoost + parseFloat(item.boostQuantity);
+        })
+        return totalBoost;
+    }
 }

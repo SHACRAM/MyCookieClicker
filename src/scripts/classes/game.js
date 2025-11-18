@@ -1,5 +1,4 @@
 	
-import { updateSourceFile } from "typescript";
 import { ClickableArea } from "../components/clickable-area";
 import { Shop } from "./Shop";
 import {Boost} from "./Boost";
@@ -66,9 +65,7 @@ export class Game {
   // Lance le jeu
 	
   start() {
-	
     this.render();
-	
   }
 	
  
@@ -77,12 +74,20 @@ export class Game {
 	
   render() {
     this.renderScore();
+      
 
     this.clickableArea.render();
     
     this.shop.render();
     this.shop.updateChildButtonState(this.cookies);
-
+    
+    setInterval(() =>{
+      this.passiveGain =parseFloat(this.shop.getAllBoostsQuantity());
+      let currentCookies = parseFloat(this.cookies);
+      this.cookies = parseFloat(currentCookies + this.passiveGain);
+      this.shop.updateChildButtonState(this.cookies);
+      this.updateScore();
+    },1000);
 	
   }
 	
@@ -97,9 +102,7 @@ export class Game {
   this.scoreElement.id = "game-score";
 
   this.gameElement.append(this.scoreElement);
-
   this.updateScore();
-	
   }
 	
  
@@ -110,7 +113,7 @@ export class Game {
 	
     this.scoreElement.innerHTML = `
 	
-        <span>${this.cookies} cookies</span>
+        <span>${this.cookies % 1 ===0 ? this.cookies : (this.cookies).toFixed(1)} cookies</span>
 	
     `;
   }
@@ -124,7 +127,7 @@ export class Game {
 	
     // On ajoute 1 point aux cookies pour chaque click.
 	
-    this.cookies += 1;
+    this.cookies += 1000;
     this.shop.updateChildButtonState(this.cookies);
 
     document.dispatchEvent(new Event("cookieClicked"));
@@ -136,9 +139,7 @@ export class Game {
     // pour réaliser les changements.
 	
     window.requestAnimationFrame(() => {
-	
       this.updateScore();
-	
     });
 	
   };
@@ -149,7 +150,6 @@ export class Game {
     this.updateScore();
     this.shop.updateChildButtonState(this.cookies);
   }
-
 
 	
 }

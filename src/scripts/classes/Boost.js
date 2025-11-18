@@ -55,7 +55,7 @@ export class Boost{
    }
 
    calculateBoost(){
-      this.boostQuantity = this.actualQuantity*0.1;
+      this.boostQuantity =(this.actualQuantity*0.1).toFixed(1);
    }
 
    getActualQuantity(){
