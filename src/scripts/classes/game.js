@@ -1,7 +1,7 @@
 import { ClickableArea } from "../components/clickable-area";
 import { Shop } from "./Shop";
 import { Boost } from "./Boost";
-import { RandomCookie } from "./randomSpawn.js";
+import { RandomCookie } from "./RandomSpawn.js";
 
 export class Game {
   // Game Properties
@@ -78,7 +78,7 @@ export class Game {
         bottom: Math.random() * 100,
       });
       document.querySelector("#game").append(randomCookie.render());
-    }, 50000);
+    }, 5000);
   }
 
   // Génère l'affichage du score.
