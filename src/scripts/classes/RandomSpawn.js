@@ -14,7 +14,7 @@ export class RandomCookie {
     this.left = values.left;
     this.right = values.right;
     this.bottom = values.bottom;
-    this.visibleDuration = 10000;
+    this.visibleDuration = 5000;
     this.durationEffect = 2000;
   }
 
@@ -37,19 +37,22 @@ export class RandomCookie {
   }
 
 
-  displayCookie(cookieElement){
+  displayCookie(cookieElement) {
     let image = cookieElement.querySelector("#randomCookieImg");
-    image.classList.remove("randomCookieImg-hidden");
-    image.classList.add("randomCookieImg-visible");
-
-    setTimeout(() => {
-      image.classList.remove("randomCookieImg-visible");
-      image.classList.add("randomCookieImg-hidden");
     
     setTimeout(() => {
-      cookieElement.remove();
-    }, this.durationEffect);
-    }, this.visibleDuration);
-
+        image.classList.remove("randomCookieImg-hidden");
+        image.classList.add("randomCookieImg-visible");
+        
+        setTimeout(() => {
+            image.classList.remove("randomCookieImg-visible");
+            image.classList.add("randomCookieImg-hidden");
+        
+            setTimeout(() => {
+                cookieElement.remove();
+            }, this.durationEffect);
+        }, this.visibleDuration);
+        
+    }, 50); 
   }
 }
