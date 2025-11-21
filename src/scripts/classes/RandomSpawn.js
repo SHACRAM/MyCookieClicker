@@ -8,6 +8,7 @@ export class RandomCookie {
   bottom;
   visibleDuration;
   durationEffect;
+  goldenCookieBoost;
 
   constructor(values) {
     this.top = values.top;
@@ -16,6 +17,7 @@ export class RandomCookie {
     this.bottom = values.bottom;
     this.visibleDuration = 5000;
     this.durationEffect = 2000;
+    this.goldenCookieBoost = values.goldenCookieBoost;
   }
 
   render() {
@@ -31,6 +33,7 @@ export class RandomCookie {
     this.displayCookie(cookieElement);
     let image = cookieElement.querySelector("#randomCookieImg");
     image.addEventListener("click", () => {
+      this.goldenCookieBoost();
       cookieElement.remove();
     });
     return cookieElement;

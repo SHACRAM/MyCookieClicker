@@ -8,6 +8,7 @@ export class Game {
 
   cookies = 0;
   passiveGain = 0;
+  boostMultiplier = 1;
 
   // Game Elements
 
@@ -63,7 +64,8 @@ export class Game {
     this.shop.updateChildButtonState(this.cookies);
 
     setInterval(() => {
-      this.passiveGain = parseFloat(this.shop.getAllBoostsQuantity());
+      let basePassiveGain = parseFloat(this.shop.getAllBoostsQuantity());
+      this.passiveGain = basePassiveGain * this.boostMultiplier;
       let currentCookies = parseFloat(this.cookies);
       this.cookies = parseFloat(currentCookies + this.passiveGain);
       this.shop.updateChildButtonState(this.cookies);
@@ -76,6 +78,7 @@ export class Game {
         left: Math.random() * 100,
         right: Math.random() * 100,
         bottom: Math.random() * 100,
+        goldenCookieBoost: this.goldenCookieBoost.bind(this)
       });
       document.querySelector("#game").append(randomCookie.render());
     }, 5000);
@@ -133,4 +136,13 @@ export class Game {
     this.updateScore();
     this.shop.updateChildButtonState(this.cookies);
   };
+//Méthode pour ajouter le boost d'un golden cookie
+  goldenCookieBoost(){
+    let tempMultiplier = this.boostMultiplier;
+    this.boostMultiplier *=1000;
+
+    setTimeout(()=>{
+      this.boostMultiplier = tempMultiplier;
+    }, 5000);
+  }
 }
