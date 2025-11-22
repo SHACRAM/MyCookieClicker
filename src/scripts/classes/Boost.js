@@ -13,9 +13,14 @@ export class Boost {
     this.updateCookiesScore = itemInfo.updateCookiesScore;
     this.shopId = itemInfo.shopId;
     this.name = itemInfo.name;
-    this.actualQuantity = itemInfo.actualQuantity;
+    if (localStorage.getItem(this.name)){
+      this.actualQuantity = parseInt(localStorage.getItem(this.name));
+    } else {
+      this.actualQuantity = itemInfo.actualQuantity;
+    }
     this.price = itemInfo.price;
-    this.boostQuantity = itemInfo.boostQuantity;
+    this.calculatePrice();
+    this.calculateBoost();
     this.cookies = itemInfo.cookies;
     this.enableBuyButton = itemInfo.enableBuyButton;
   }
@@ -38,6 +43,7 @@ export class Boost {
 
     buyButton.addEventListener("click", () => {
       this.updateBoostInfo();
+      this.save();
     });
 
     document.querySelector("#" + this.shopId).append(boostItemElement);
@@ -79,6 +85,16 @@ export class Boost {
     const buyButton = this.boostElement.querySelector(".buyButton");
     buyButton.disabled = status;
   }
+
+
+  save(){
+    let actualQuantity =this.actualQuantity;
+    let name = this.name;
+    localStorage.setItem(name, actualQuantity);
+  }
+
+
+
 }
 
-// AJOUTER UN ECOUTEUR POUR ACTIVER DESACTIVER LE BOOUTON
+

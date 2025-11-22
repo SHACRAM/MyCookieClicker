@@ -6,9 +6,9 @@ import { RandomCookie } from "./RandomSpawn.js";
 export class Game {
   // Game Properties
 
-  cookies = 0;
+  cookies= 0;
   passiveGain = 0;
-  boostMultiplier = 1;
+  boostMultiplier= 1;
 
   // Game Elements
 
@@ -24,7 +24,6 @@ export class Game {
 
   constructor(config) {
     // Récupère le nombre de cookie de base via la configuration.
-
     this.cookies = config.cookies;
 
     // Récupère l'élément avec l'id game.
@@ -56,6 +55,18 @@ export class Game {
   // Génère les éléments à afficher.
 
   render() {
+    const storedCookies = localStorage.getItem("cookies");
+
+    if (storedCookies !== null){
+      this.cookies = parseFloat(storedCookies || '0');
+      this.passiveGain = parseFloat(localStorage.getItem("passiveGain") || '0');
+      this.boostMultiplier = parseFloat(localStorage.getItem("boostMultiplier") || '1');
+    }else {
+      this.cookies = 0;
+      this.passiveGain = 0;
+      this.boostMultiplier = 1;
+    }
+
     this.renderScore();
 
     this.clickableArea.render();
@@ -81,7 +92,13 @@ export class Game {
         goldenCookieBoost: this.goldenCookieBoost.bind(this)
       });
       document.querySelector("#game").append(randomCookie.render());
-    }, 5000);
+    }, 50000);
+
+    setInterval(() => {
+      localStorage.setItem("cookies", this.cookies);
+      localStorage.setItem("passiveGain", this.passiveGain);
+      localStorage.setItem("boostMultiplier", this.boostMultiplier);
+    }, 1000);
   }
 
   // Génère l'affichage du score.
@@ -145,4 +162,19 @@ export class Game {
       this.boostMultiplier = tempMultiplier;
     }, 5000);
   }
+
+  save(){
+    const gameState ={
+      cookies : this.cookies,
+      passiveGain : this.passiveGain,
+      boostMultiplier : this.boostMultiplier
+    }
+
+  }
+
+
+
+
+
+
 }
