@@ -24,7 +24,7 @@ export class RandomCookie {
     let cookieElement = document.createElement("div");
     cookieElement.id = "randomCookie";
     cookieElement.innerHTML = `
-                <img id="randomCookieImg" class="randomCookieImg randomCookieImg-hidden" src="./src/assets/goldenCookie.png" width="128px" height="128px" alt="A random cookie." />`;
+                <img id="randomCookieImg" class="randomCookieImg randomCookieImg-hidden" src="./src/assets/Bill.png" width="128px" height="128px" alt="A random cookie." />`;
     cookieElement.style.position = "absolute";
     cookieElement.style.top = this.top + "%";
     cookieElement.style.bottom = this.bottom + "%";

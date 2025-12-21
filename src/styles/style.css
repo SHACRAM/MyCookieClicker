@@ -1,38 +1,51 @@
-@keyframes spinAndPulse {
+@keyframes Pulse {
   0% {
-    transform: rotate(0deg) scale(1);
+    transform: scale(1);
     filter: brightness(1);
   }
   50% {
-    transform: rotate(180deg) scale(1.1);
-    filter: brightness(1.1);
+    transform: scale(1.06);
+    filter: brightness(1.08);
   }
   100% {
-    transform: rotate(360deg) scale(1);
+    transform: scale(1);
     filter: brightness(1);
   }
 }
 
 #cookie {
-  animation: spinAndPulse 8s linear infinite;
+  animation: Pulse 1.8s ease-in-out infinite;
   transform-origin: center center;
   will-change: transform;
   cursor: pointer;
 }
 
 #game-clickable-area.active {
-  transform: scale(1.1);
+  transform: scale(1.05);
   transition: transform 0.3s;
+}
+
+#game-clickable-area {
+  margin-top: 20px;
 }
 
 #game {
   position: relative;
+  min-height: 100vh;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
 }
 .randomCookieImg{
   transition : opacity 2s ease-in-out;
   display: block;
   cursor: pointer;
+  
 }
+
 .randomCookieImg:hover{
   transition: ease-in-out 0.2s;
   transform: scale(1.05);
@@ -45,3 +58,91 @@
 .randomCookieImg-visible{
   opacity: 1;
 }
+
+
+#app{
+  min-height: 100vh;
+  background-color: #008080;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+
+body{
+  margin:0;
+}
+
+
+#title{
+  margin: 0;
+}
+
+
+#cardBoost{
+  width: 600px;
+  height: 180px;
+  background-image: url('/src/assets/card2.png');
+  background-size: cover;
+  position: relative;;
+}
+
+#cardBoost h3{
+  position: absolute;
+  top: 25px;
+  left: 20px;
+}
+
+#cardBoost div{
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}
+
+#cardBoost button{
+  width: 135px;
+  height:40px;
+  position: absolute;
+  bottom: 20px;
+  right: 30px; 
+  font-size: 1.5rem; 
+  background-image: url('/src/assets/error98.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+
+}
+
+#cardBoost img{
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 60px;
+  right: 200px;
+}
+
+#shop{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#boost-item-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;;
+}
+
+#game-score{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 1.5rem;
+}
+
+
+

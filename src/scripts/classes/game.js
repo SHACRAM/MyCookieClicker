@@ -1,14 +1,14 @@
 import { ClickableArea } from "../components/clickable-area";
 import { Shop } from "./Shop";
-import { Boost } from "./Boost";
 import { RandomCookie } from "./RandomSpawn.js";
 
 export class Game {
   // Game Properties
-
-  cookies= 0;
-  passiveGain = 0;
-  boostMultiplier= 1;
+  save;
+  cookies;
+  passiveGain;
+  boostMultiplier;
+  items;
 
   // Game Elements
 
@@ -25,6 +25,11 @@ export class Game {
   constructor(config) {
     // Récupère le nombre de cookie de base via la configuration.
     this.cookies = config.cookies;
+    this.passiveGain = config.passiveGain;
+    this.boostMultiplier = config.boostMultiplier;
+    this.items = config.items;
+    this.save = config.save;
+
 
     // Récupère l'élément avec l'id game.
 
@@ -43,6 +48,10 @@ export class Game {
     );
     this.shop = new Shop({
       updateCookiesScore: this.updateCookiesScore,
+      items: this.items,
+      saveData: this.saveData.bind(this),
+      save: this.save,
+      updateItemsList: this.updateItemsList.bind(this)
     });
   }
 
@@ -55,17 +64,6 @@ export class Game {
   // Génère les éléments à afficher.
 
   render() {
-    const storedCookies = localStorage.getItem("cookies");
-
-    if (storedCookies !== null){
-      this.cookies = parseFloat(storedCookies || '0');
-      this.passiveGain = parseFloat(localStorage.getItem("passiveGain") || '0');
-      this.boostMultiplier = parseFloat(localStorage.getItem("boostMultiplier") || '1');
-    }else {
-      this.cookies = 0;
-      this.passiveGain = 0;
-      this.boostMultiplier = 1;
-    }
 
     this.renderScore();
 
@@ -95,9 +93,7 @@ export class Game {
     }, 50000);
 
     setInterval(() => {
-      localStorage.setItem("cookies", this.cookies);
-      localStorage.setItem("passiveGain", this.passiveGain);
-      localStorage.setItem("boostMultiplier", this.boostMultiplier);
+      this.saveData();
     }, 1000);
   }
 
@@ -119,14 +115,11 @@ export class Game {
 	
         <span>${
           this.cookies % 1 === 0 ? this.cookies : this.cookies.toFixed(1)
-        } cookies</span>
+        } dollars</span>
 	
     `;
   }
 
-  // Ici on utilise une fonction fléchée pour avoir encore accès au this de Game.
-
-  // Sans fonction fléchée, le this serait celui de l'élément lié au click.
 
   onClickableAreaClick = () => {
     // On ajoute 1 point aux cookies pour chaque click.
@@ -147,7 +140,7 @@ export class Game {
     });
   };
 
-  // Methode pour mettre à jour la quantité de cookies aprés un achat dans le shop
+  // Methode pour mettre à jour la quantité de cookies après un achat dans le shop
   updateCookiesScore = (purchaseQuantity) => {
     this.cookies -= purchaseQuantity;
     this.updateScore();
@@ -163,18 +156,31 @@ export class Game {
     }, 5000);
   }
 
-  save(){
-    const gameState ={
-      cookies : this.cookies,
-      passiveGain : this.passiveGain,
-      boostMultiplier : this.boostMultiplier
-    }
+
+  //methode pour sauvegarder la partie dans le local storage
+  saveData(){
+    this.save.saveGame(
+      this.boostMultiplier,
+      this.passiveGain,
+      this.cookies,
+      this.items
+    )
 
   }
 
-
-
-
-
+  //methode pour mettre à jour la liste des items
+  updateItemsList(name){
+    const itemInTable = this.items.find(item => item.name === name);
+    if (itemInTable) {
+        itemInTable.actualQuantity += 1;
+    } else {
+        this.items.push({
+            name: name,
+            actualQuantity: 1
+        });
+    }
+  }
+      
+  
 
 }

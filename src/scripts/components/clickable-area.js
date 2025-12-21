@@ -1,5 +1,5 @@
 	
-import CookieIMG from "/src/assets/cookie.webp";
+import CookieIMG from "/src/assets/98.svg";
 	
  
 	

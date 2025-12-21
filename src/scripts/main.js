@@ -1,10 +1,11 @@
 import "../styles/style.css";
 
 import { Game } from "./classes/game";
+import { Save } from "./classes/Save";
 
 document.querySelector("#app").innerHTML = `
 	
-    <h1>Welcome to my Cookie Clicker!</h1>
+    <h1 id='title'>Welcome to my dollars maker!</h1>
 	
     <main id="game">
 	
@@ -12,8 +13,13 @@ document.querySelector("#app").innerHTML = `
 	
 `;
 
+const save = new Save()
+const savedData= save.loadGame();
+
+
 const game = new Game({
-  cookies: 0,
+  ...savedData,
+  save: save
 });
 
 game.start();

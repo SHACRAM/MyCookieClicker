@@ -1,28 +1,36 @@
+import { Save } from "./Save.js";
+
 export class Boost {
   shopId;
+  image;
   name;
   actualQuantity;
   price;
   boostQuantity;
+  personnalBoostValue;
   cookies;
   enableBuyButton;
+  saveData;
+  updateItemsList;
 
   boostElement = null;
 
   constructor(itemInfo) {
     this.updateCookiesScore = itemInfo.updateCookiesScore;
+    this.image = itemInfo.image;
     this.shopId = itemInfo.shopId;
     this.name = itemInfo.name;
-    if (localStorage.getItem(this.name)){
-      this.actualQuantity = parseInt(localStorage.getItem(this.name));
-    } else {
-      this.actualQuantity = itemInfo.actualQuantity;
-    }
     this.price = itemInfo.price;
-    this.calculatePrice();
-    this.calculateBoost();
     this.cookies = itemInfo.cookies;
     this.enableBuyButton = itemInfo.enableBuyButton;
+    this.boostQuantity = itemInfo.boostQuantity;
+    this.saveData = itemInfo.saveData;
+    this.updateItemsList = itemInfo.updateItemsList;
+    this.actualQuantity = 0;
+    this.personnalBoostValue = itemInfo.personnalBoostValue || 0.1;
+    this.defineActualQuantity();
+    this.calculatePrice();
+    this.calculateBoost();
   }
 
   render() {
@@ -30,11 +38,16 @@ export class Boost {
     boostItemElement.className = "boost-item";
 
     boostItemElement.innerHTML = `
-         <h3>${this.name}</h3>
-         <p class="itemQuantity">Quantity: ${this.actualQuantity}</p>
-         <p class="itemPrice">Price: ${this.price} cookies</p>
-         <p class="itemBoostQuantity">Boost: +${this.boostQuantity} cookies/sec</p>
-         <button class="buyButton">Buy</button>
+        <div id='cardBoost'>
+          <h3>${this.name}</h3>
+          <div>
+            <p class="itemQuantity">Quantity: ${this.actualQuantity}</p>
+            <p class="itemPrice">Price: ${this.price} dollars</p>
+            <p class="itemBoostQuantity">Boost: +${this.boostQuantity} dollars/sec</p>
+          </div>
+          <img src="./src/assets/${this.image}" alt="${this.name}" />
+          <button class="buyButton">Buy</button>
+        </div>
       `;
 
     this.boostElement = boostItemElement;
@@ -43,10 +56,23 @@ export class Boost {
 
     buyButton.addEventListener("click", () => {
       this.updateBoostInfo();
-      this.save();
-    });
+      this.updateItemsList(this.name);
+      this.saveData();
+    }); 
 
     document.querySelector("#" + this.shopId).append(boostItemElement);
+  }
+
+  defineActualQuantity() {
+    try {
+      const save = new Save();
+      const data = save.loadGame();
+      const items = Array.isArray(data?.items) ? data.items : [];
+      const match = items.find((item) => item && item.name === this.name);
+      this.actualQuantity = match ? (parseInt(match.actualQuantity, 10) || 0) : 0;
+    } catch (e) {
+      this.actualQuantity = 0;
+    }
   }
 
   calculatePrice() {
@@ -54,7 +80,7 @@ export class Boost {
   }
 
   calculateBoost() {
-    this.boostQuantity = (this.actualQuantity * 0.1).toFixed(1);
+    this.boostQuantity = (this.actualQuantity * this.personnalBoostValue).toFixed(1);
   }
 
   getActualQuantity() {
@@ -76,22 +102,16 @@ export class Boost {
     ).textContent = `Quantity: ${this.actualQuantity}`;
     this.boostElement.querySelector(
       ".itemPrice"
-    ).textContent = `Price: ${this.price} cookies`;
+    ).textContent = `Price: ${this.price} dollars`;
     this.boostElement.querySelector(
       ".itemBoostQuantity"
-    ).textContent = `Boost: +${this.boostQuantity} cookies/sec`;
+    ).textContent = `Boost: +${this.boostQuantity} dollars/sec`;
   }
   updateBuyButtonState(status) {
     const buyButton = this.boostElement.querySelector(".buyButton");
     buyButton.disabled = status;
   }
 
-
-  save(){
-    let actualQuantity =this.actualQuantity;
-    let name = this.name;
-    localStorage.setItem(name, actualQuantity);
-  }
 
 
 
